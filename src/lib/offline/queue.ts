@@ -1,0 +1,6 @@
+import * as SQLite from 'expo-sqlite';
+export type QueuedMutation = { id: string; mutationType: string; entityType: string; entityId: string; payload: string; createdAt: string; attemptCount: number; status: 'pending' | 'syncing' | 'failed' };
+const database = SQLite.openDatabaseSync('project-home.db');
+export function initializeOfflineStore() { database.execSync('create table if not exists mutation_queue (id text primary key, mutation_type text not null, entity_type text not null, entity_id text not null, payload text not null, created_at text not null, attempt_count integer not null default 0, status text not null check(status in (\'pending\',\'syncing\',\'failed\')))'); }
+export function enqueueMutation(item: QueuedMutation) { database.runSync('insert or replace into mutation_queue values (?, ?, ?, ?, ?, ?, ?, ?)', [item.id,item.mutationType,item.entityType,item.entityId,item.payload,item.createdAt,item.attemptCount,item.status]); }
+export function pendingMutations() { return database.getAllSync<QueuedMutation>('select id, mutation_type as mutationType, entity_type as entityType, entity_id as entityId, payload, created_at as createdAt, attempt_count as attemptCount, status from mutation_queue where status in (\'pending\', \'failed\') order by created_at'); }

@@ -1,0 +1,3 @@
+-- Development-only fixture names; never import this into a production project.
+-- Create auth users first, then use their profile UUIDs to seed Petrović Home, Vid, Dad, and Mom.
+-- Domain fixtures: Take trash out (anyone), Clean kitchen (rotation), Feed dog (Vid), Milk/Eggs/Bread, Swimming at 19:00, Internet €31.99, Groceries €84.30.

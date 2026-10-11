@@ -1,0 +1,4 @@
+import { create } from 'zustand';
+export type Task = { id: string; title: string; assignment: string; due: string; completed: boolean };
+type TaskState = { tasks: Task[]; toggle: (id: string) => void; add: (title: string) => void };
+export const useTaskStore = create<TaskState>((set) => ({ tasks: [{ id: 'trash', title: 'Take trash out', assignment: 'Anyone', due: 'Today', completed: false }, { id: 'dog', title: 'Feed dog', assignment: 'Vid', due: 'Today · 18:00', completed: false }, { id: 'kitchen', title: 'Clean kitchen', assignment: 'Rotation · Dad', due: 'Tomorrow', completed: false }], toggle: (id) => set((state) => ({ tasks: state.tasks.map((task) => task.id === id ? { ...task, completed: !task.completed } : task) })), add: (title) => set((state) => ({ tasks: [{ id: crypto.randomUUID(), title, assignment: 'Anyone', due: 'Today', completed: false }, ...state.tasks] })) }));
